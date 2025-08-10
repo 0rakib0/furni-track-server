@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework',
     'order_management',
-    'utilities'
+    'utilitie'
 ]
 
 MIDDLEWARE = [

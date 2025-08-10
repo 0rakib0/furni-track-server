@@ -17,6 +17,9 @@ class DealerModel(models.Model):
     
     
     
+    
+    
+    
 class EmployeeModel(models.Model):
     name = models.CharField(max_length=166)
     age = models.CharField(max_length=20)
