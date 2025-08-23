@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
-from .serializers import DealerSerializer
-from .models import DealerModel
+from .serializers import DealerSerializer, EmployeeSerializer
+from .models import DealerModel, EmployeeModel
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -9,3 +9,11 @@ from rest_framework.response import Response
 class DealerViewSet(viewsets.ModelViewSet):
     serializer_class = DealerSerializer
     queryset = DealerModel.objects.all()
+    
+    
+class EmployeeViewSet(viewsets.ModelViewSet):
+    serializer_class = EmployeeSerializer
+    queryset = EmployeeModel.objects.all()
+    
+    
+

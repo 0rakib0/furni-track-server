@@ -8,7 +8,8 @@ urlpatterns = [
 
 
 router = DefaultRouter()
-router.register(r'dealers', views.DealerViewSet, basename='user')
+router.register(r'dealers', views.DealerViewSet, basename='dealer')
+router.register(r'employee', views.EmployeeViewSet, basename='employee')
 urlpatterns = router.urls
 
 
