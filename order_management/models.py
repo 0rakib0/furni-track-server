@@ -24,7 +24,5 @@ class OrderModel(models.Model):
     def __str__(self):
         return self.customar_name
     
-    def get_due_amount(self):
-        return self.total_price - self.advance_payment
 
     
