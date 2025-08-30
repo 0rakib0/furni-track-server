@@ -6,7 +6,12 @@ class OrderModel(models.Model):
     customar_name = models.CharField(max_length=166)
     memo_number = models.CharField(max_length=20)
     cutomar_phone = models.CharField(max_length=20)
+    product_name = models.CharField(max_length=266)
+    details = models.TextField()
+    product_image = models.ImageField(upload_to='product_image')
     delivery_address = models.TextField()
+    total_price = models.FloatField(default=0)
+    advance_payment = models.FloatField(default=0)
     delivery_date = models.DateField()
     frame_show_date = models.DateField()
     dealer = models.ForeignKey(DealerModel ,on_delete=models.DO_NOTHING)
@@ -18,4 +23,8 @@ class OrderModel(models.Model):
     
     def __str__(self):
         return self.customar_name
+    
+    def get_due_amount(self):
+        return self.total_price - self.advance_payment
+
     
