@@ -35,7 +35,7 @@ class OrderModel(models.Model):
     
     
     def __str__(self):
-        return self.customar_name
+        return self.customar.name
     
 
     
