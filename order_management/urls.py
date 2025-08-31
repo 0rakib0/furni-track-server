@@ -11,4 +11,5 @@ urlpatterns = [
 
 router = DefaultRouter()
 router.register(r'orders', views.OrderViewSet, basename='orders')
+router.register(r'customars', views.CustomarViewSet, basename='customar')
 urlpatterns = router.urls
