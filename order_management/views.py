@@ -23,11 +23,11 @@ class OrderManagementDashbord(APIView):
         recent_serializer = OrderSerializer(recent_order, many=True)
         
         # get only pending order data
-        pending_order = OrderModel.objects.filter(order_status=False).order_by("-id")[:10]
-        pending_serializer = OrderSerializer(pending_order, many=True)
+        upcomming_delivery = OrderModel.objects.filter(order_status=False).order_by("delivery_date")[:10]
+        upcommingDeliverySerializer = OrderSerializer(upcomming_delivery, many=True)
         return Response({
             'recent_order':recent_serializer.data,
-            'pending_order':pending_serializer.data
+            'upcomming_delivery':upcommingDeliverySerializer.data
         })
     
     
