@@ -11,6 +11,7 @@ urlpatterns = router.urls
 
 urlpatterns = [
     path('order-management/', views.OrderManagementDashbord.as_view()),
-     path('', include(router.urls)),
+    path('order-search/', views.OrderSearch.as_view()),
+    path('', include(router.urls)),
 ]
 

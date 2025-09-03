@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import OrderModel, CustomerModel
 from .serializers import OrderSerializer, CustomarSerializer
 from rest_framework.views import APIView
+from django.db.models import Q
 # Create your views here.
 
 
@@ -30,5 +31,13 @@ class OrderManagementDashbord(APIView):
             'upcomming_delivery':upcommingDeliverySerializer.data
         })
     
-    
+class OrderSearch(APIView):
+    def get(self, request):
+        query = request.GET.get('order-search')
+        if query:
+            orders = OrderModel.objects.filter(Q( memo_number = query) | Q(customar__phone = query))
+        else:
+            orders = OrderModel.objects.all()
 
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
