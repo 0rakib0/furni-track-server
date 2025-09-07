@@ -12,6 +12,7 @@ urlpatterns = router.urls
 urlpatterns = [
     path('order-management/', views.OrderManagementDashbord.as_view()),
     path('order-search/', views.OrderSearch.as_view()),
+    path('recent-delivery-order/', views.RecentDeliveryData, name='recent_delivery'),
     path('', include(router.urls)),
 ]
 
