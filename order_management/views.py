@@ -9,6 +9,8 @@ from django.utils.timezone import timedelta
 from django.utils import timezone
 from rest_framework import status
 from django.db.models import Q
+from django.db.models.functions import TruncDate
+from django.db.models import Count
 # Create your views here.
 
 
@@ -71,4 +73,20 @@ def RecentDeliveryData(request):
             {'error':str(e)},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+        
+        
+@api_view(['GET'])
+def ChartData(request):
+    try:
+        data = (
+            OrderModel.objects
+            .annotate(date=TruncDate("created_at"))
+            .values('date')
+            .annotate(count=Count('id'))
+            .order_by('date')
+        )
+        print(data)
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response ({"error":str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
