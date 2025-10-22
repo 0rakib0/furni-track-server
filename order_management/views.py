@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from django.utils.timezone import timedelta
 from django.utils import timezone
 from rest_framework import status
-from django.db.models import Q
+from django.db.models import Q, F
 from django.db.models.functions import TruncDate
 from django.db.models import Count
 # Create your views here.
@@ -78,15 +78,22 @@ def RecentDeliveryData(request):
 @api_view(['GET'])
 def ChartData(request):
     try:
-        data = (
+        order_data = (
             OrderModel.objects
             .annotate(date=TruncDate("created_at"))
             .values('date')
             .annotate(count=Count('id'))
             .order_by('date')
         )
-        print(data)
-        return Response(data, status=status.HTTP_200_OK)
+        ontime_delivery_data = (
+            OrderModel.objects
+            .filter(order_status=True, delivery_date=F('delivery_date'))
+            .annotate(date=TruncDate("delivery_date"))
+            .values("date")
+            .annotate(count=Count("id"))
+            .order_by("date")
+        )
+        return Response({"order_data":order_data, "ontime_delivery_data":ontime_delivery_data}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response ({"error":str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

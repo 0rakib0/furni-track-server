@@ -25,6 +25,7 @@ class OrderModel(models.Model):
     total_price = models.FloatField(default=0)
     advance_payment = models.FloatField(default=0)
     delivery_date = models.DateField()
+    initial_dalivery_date = models.DateField()
     next_advance_payment_date = models.DateField(null=True, blank=True)
     frame_show_date = models.DateField()
     dealer = models.ForeignKey(DealerModel ,on_delete=models.DO_NOTHING)
