@@ -37,6 +37,13 @@ class OrderManagementDashbord(APIView):
             'upcomming_delivery':upcommingDeliverySerializer.data
         })
     
+
+class DeliveredOrder(APIView):
+    def get(self, request):
+        orders = OrderModel.objects.filter(Q( order_status = True))
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
 class OrderSearch(APIView):
     def get(self, request):
         query = request.GET.get('order-search', '')
