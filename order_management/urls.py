@@ -15,6 +15,7 @@ urlpatterns = [
     path('delivered-order/', views.DeliveredOrder.as_view()),
     path('recent-delivery-order/', views.RecentDeliveryData, name='recent_delivery'),
     path('chart-data/', views.ChartData, name="chartData"),
+    path('delivery-dates/', views.DeliveryDates.as_view()),
     path('', include(router.urls)),
 ]
 

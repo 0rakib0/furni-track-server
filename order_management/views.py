@@ -104,4 +104,18 @@ def ChartData(request):
         return Response({'order_data':order_data}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response ({"error":str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
+class DeliveryDates(APIView):
+    def get(self, request):
+        today = timezone.now().date()
+        upcomming_delivery = OrderModel.objects.filter(
+            order_status = False,
+            delivery_date__gte = today
+            ).values_list('delivery_date', flat=True).order_by('delivery_date')
+        delivery_date = [date.isoformat() for date in upcomming_delivery]
+        print(delivery_date)
+        return Response(delivery_date)
+    
+
 
