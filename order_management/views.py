@@ -118,4 +118,8 @@ class DeliveryDates(APIView):
         return Response(delivery_date)
     
 
+class FilterOrdersData(APIView):
+    def get(self, request):
+        return Response({'Order Data Filter':'Upcomming......'})
+
 
