@@ -120,6 +120,11 @@ class DeliveryDates(APIView):
 
 class FilterOrdersData(APIView):
     def get(self, request):
-        return Response({'Order Data Filter':'Upcomming......'})
+        # add try and exeption here
+        start_date = '2025-11-4'
+        end_date = '2025-11-10'
+        filter_order = OrderModel.objects.filter(created_at__range=[start_date, end_date])
+        order_serializer = OrderSerializer(filter_order, many=True)
+        return Response(order_serializer.data, status=status.HTTP_200_OK)
 
 
