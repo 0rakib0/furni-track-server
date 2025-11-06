@@ -120,11 +120,22 @@ class DeliveryDates(APIView):
 
 class FilterOrdersData(APIView):
     def get(self, request):
-        # add try and exeption here
-        start_date = '2025-11-4'
-        end_date = '2025-11-10'
-        filter_order = OrderModel.objects.filter(created_at__range=[start_date, end_date])
-        order_serializer = OrderSerializer(filter_order, many=True)
-        return Response(order_serializer.data, status=status.HTTP_200_OK)
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+        
+        print("------------------")
+        print(start_date)
+        print(end_date)
+        
+        try:
+            filter_order = OrderModel.objects.filter(created_at__range=[start_date, end_date])
+            order_serializer = OrderSerializer(filter_order, many=True)
+            return Response(order_serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {'error':str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
 
 
