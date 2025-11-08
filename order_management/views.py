@@ -139,3 +139,13 @@ class FilterOrdersData(APIView):
         
 
 
+class LateDeliveryData(APIView):
+    def get(self, request):
+        today = timezone.now().date()
+        late_delivery = OrderModel.objects.filter(
+            Q(order_status = False) &
+            Q(delivery_date__gte = today) &
+            ~Q(delivery_date = F('initial_dalivery_date'))
+            )
+        order_serializer = OrderSerializer(late_delivery, many=True)
+        return Response(order_serializer.data, status=status.HTTP_200_OK)

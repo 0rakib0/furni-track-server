@@ -17,6 +17,7 @@ urlpatterns = [
     path('chart-data/', views.ChartData, name="chartData"),
     path('delivery-dates/', views.DeliveryDates.as_view()),
     path('order-data-filter/', views.FilterOrdersData.as_view()),
+    path('late-delivery-orders/', views.LateDeliveryData.as_view()),
     path('', include(router.urls)),
 ]
 
