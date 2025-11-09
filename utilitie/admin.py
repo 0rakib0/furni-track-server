@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import DealerModel, EmployeeModel
+from .models import DealerModel, EmployeeModel, DelaerPayment
 # Register your models here.
 admin.site.register(DealerModel)
+admin.site.register(DelaerPayment)
 admin.site.register(EmployeeModel)

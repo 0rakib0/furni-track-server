@@ -23,6 +23,20 @@ class DealerModel(models.Model):
     def __str__(self):
         return self.name
     
+
+class DelaerPayment(models.Model):
+    dealer = models.ForeignKey(DealerModel, on_delete=models.DO_NOTHING)
+    ref_memo = models.CharField(max_length=20, blank=True, null=True)
+    payment_method = models.CharField(max_length=166)
+    amount = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    
+    def __str__(self):
+        return self.name
+    
+    
     
     
     
