@@ -39,9 +39,6 @@ class DelaerPayment(models.Model):
     
     
     
-    
-    
-    
 class EmployeeModel(models.Model):
     name = models.CharField(max_length=166)
     age = models.CharField(max_length=20)
@@ -65,3 +62,16 @@ class EmployeeModel(models.Model):
     
     def __str__(self):
         return self.name
+    
+    
+    
+class EmployeExpenses(models.Model):
+    employee = models.ForeignKey(EmployeeModel, on_delete=models.DO_NOTHING)
+    expense_title = models.CharField(max_length=100)
+    expenses_category = models.CharField(max_length=166)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    approved_by  = models.CharField(max_length=166)
+    
+    
+    def __str__(self):
+        return self.expense_title
