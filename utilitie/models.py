@@ -34,7 +34,7 @@ class DelaerPayment(models.Model):
     
     
     def __str__(self):
-        return self.name
+        return self.ref_memo + ' => ' + self.dealer.name
     
     
     
