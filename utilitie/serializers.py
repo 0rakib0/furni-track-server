@@ -7,6 +7,11 @@ class DealerSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class DelaerPaymentSerializer(serializers.ModelSerializer):
+    dealer = DealerSerializer(read_only=True)
+    
+    dealer_id = serializers.PrimaryKeyRelatedField(
+        queryset=DealerModel.objects.all(), source='dealer', write_only=True
+    )
     class Meta:
         model = DelaerPayment
         fields = '__all__'
