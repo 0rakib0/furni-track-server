@@ -11,7 +11,7 @@ class DelaerPaymentSerializer(serializers.ModelSerializer):
     
     dealer_id = serializers.PrimaryKeyRelatedField(
         queryset=DealerModel.objects.all(), source='dealer', write_only=True
-    )
+    ) #এখানে এটা দেয়ার পরে পোস্ট রিকুয়েস্ট কাজ করসে না রাতে ঠিক করতে হবে
     class Meta:
         model = DelaerPayment
         fields = '__all__'
