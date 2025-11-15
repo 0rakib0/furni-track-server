@@ -8,13 +8,16 @@ class DealerSerializer(serializers.ModelSerializer):
         
 class DelaerPaymentSerializer(serializers.ModelSerializer):
     dealer = DealerSerializer(read_only=True)
-    
     dealer_id = serializers.PrimaryKeyRelatedField(
-        queryset=DealerModel.objects.all(), source='dealer', write_only=True
-    ) #এখানে এটা দেয়ার পরে পোস্ট রিকুয়েস্ট কাজ করসে না রাতে ঠিক করতে হবে
+        queryset=DealerModel.objects.all(),
+        source='dealer',
+        write_only=True
+    )
+
     class Meta:
         model = DelaerPayment
         fields = '__all__'
+
         
         
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -24,6 +27,12 @@ class EmployeeSerializer(serializers.ModelSerializer):
         
         
 class EmployeeExpenseSerializer(serializers.ModelSerializer):
+    employee = EmployeeSerializer(read_only=True)
+    employee_id = serializers.PrimaryKeyRelatedField(
+        queryset = EmployeeModel.objects.all(),
+        source='employee',
+        write_only=True
+    )
     class Meta:
         model=EmployeExpenses
         fields = '__all__'
