@@ -75,3 +75,20 @@ class EmployeExpenses(models.Model):
     
     def __str__(self):
         return self.expense_title
+    
+    
+class CustomarComplain(models.Model):
+    customar_name = models.CharField(max_length=266)
+    title = models.CharField(max_length=366)
+    memo = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=366)
+    problem_details = models.TextField()
+    service_date = models.DateField()
+    problem_pic = models.ImageField(upload_to='problemsPic')
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+    
+    
+    def __str__(self):
+        return self.customar_name + ' => ' + self.memo
