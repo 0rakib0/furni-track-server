@@ -30,6 +30,11 @@ class EmployeeExpenseViewSet(viewsets.ModelViewSet):
 
 
 class CustomarComplainView(APIView):
+    def post(self, request, format=None):
+        complain_data = ComplainSerializer(data=request.data)
+        if complain_data.is_valid():
+            complain_data.save()
+            return Response(complain_data.data, status=status.HTTP_201_CREATED)
     def get(self, request):
         try:
             # here need to apply filter with paramiters
