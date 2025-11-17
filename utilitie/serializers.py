@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import DealerModel, DelaerPayment, EmployeeModel, EmployeExpenses
+from .models import DealerModel, DelaerPayment, EmployeeModel, EmployeExpenses, CustomarComplain
 
 class DealerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,4 +35,10 @@ class EmployeeExpenseSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model=EmployeExpenses
+        fields = '__all__'
+        
+        
+class ComplainSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CustomarComplain
         fields = '__all__'
