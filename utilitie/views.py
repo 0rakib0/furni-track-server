@@ -35,17 +35,23 @@ class CustomarComplainView(APIView):
         if complain_data.is_valid():
             complain_data.save()
             return Response(complain_data.data, status=status.HTTP_201_CREATED)
+        return Response(
+            complain_data.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
     def get(self, request):
-        try:
-            # here need to apply filter with paramiters
-            complain_data = CustomarComplain.objects.all()
-            seriaizer = ComplainSerializer(complain_data, many=True)
-            return Response(seriaizer.data, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(
-                {'error':str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-        return Response({'message':'Customar complain data comming....'})
+        query_data = request.query_params.get('filter')
+
+        filter_map = {
+            'all-data': CustomarComplain.objects.all(),
+            'pending-data': CustomarComplain.objects.filter(status=False),
+            'complate-data': CustomarComplain.objects.filter(status=True),
+        }
+
+    # Default → all-data
+        queryset = filter_map.get(query_data, filter_map['all-data']).order_by('-id')
+
+        serializer = ComplainSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
