@@ -14,6 +14,7 @@ urlpatterns = router.urls
 
 urlpatterns = [
     path('customar-complain/', views.CustomarComplainView.as_view()),
+    path('customar-complain/<int:id>/', views.CustomarComplainView.as_view()),
     path('', include(router.urls)),
 ]
 

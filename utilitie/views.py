@@ -53,5 +53,14 @@ class CustomarComplainView(APIView):
 
         serializer = ComplainSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def delete(self, request, id):
+        try:
+            complain = CustomarComplain.objects.get(id=id)
+        except CustomarComplain.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        complain.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
     
 
