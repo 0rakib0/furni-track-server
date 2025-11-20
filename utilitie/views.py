@@ -61,6 +61,17 @@ class CustomarComplainView(APIView):
 
         complain.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def patch (self, request, id):
+        print("--------Hello from Patch-------")
+        try:
+            complain = CustomarComplain.objects.get(id=id)
+        except CustomarComplain.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        print("=======-------=======")
+        complain.status = True
+        complain.save()
+        return Response({"message": "Complain marked as completed"}, status=status.HTTP_200_OK)
         
     
 
