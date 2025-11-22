@@ -1,10 +1,16 @@
 from django.shortcuts import get_object_or_404
 from .serializers import DealerSerializer, EmployeeSerializer, DelaerPaymentSerializer, EmployeeExpenseSerializer, ComplainSerializer
 from .models import DealerModel, EmployeeModel, DelaerPayment, EmployeExpenses, CustomarComplain
+from order_management.models import OrderModel, CustomerModel
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import api_view
+from django.utils import timezone
+from order_management.serializers import OrderSerializer
+from django.db.models import Q, F
+
 
 # Create your views here.
 
@@ -68,10 +74,41 @@ class CustomarComplainView(APIView):
             complain = CustomarComplain.objects.get(id=id)
         except CustomarComplain.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        print("=======-------=======")
         complain.status = True
         complain.save()
         return Response({"message": "Complain marked as completed"}, status=status.HTTP_200_OK)
         
     
-
+@api_view(['GET'])
+def dashbord(request):
+    today = timezone.localdate() 
+    tomorrow = today + timezone.timedelta(days=1)
+    three_days = today + timezone.timedelta(days=3)
+    orders = OrderModel.objects.all()
+    
+    todays_delivery_order = orders.filter(delivery_date=today)
+    today_order_serializer = OrderSerializer(todays_delivery_order, many=True)
+    
+    tomorrow_delivery_order = orders.filter(delivery_date=tomorrow)
+    tomorrow_order_serializer = OrderSerializer(tomorrow_delivery_order, many=True)
+    
+    after_three_days_delivery_order = orders.filter(
+        delivery_date__gt=today,
+        delivery_date__lte=three_days
+    )
+    after_three_days_order_serializer = OrderSerializer(after_three_days_delivery_order, many=True)
+    
+    todays_orders = orders.filter(created_at__date=today)
+    todays_order_serializer = OrderSerializer(todays_orders, many=True)
+    
+    data = {
+        "total_order" : orders.count(),
+        "pending_orders":orders.filter(order_status=False).count(),
+        "total_customar": CustomerModel.objects.count(),
+        "todays_orders" : todays_order_serializer.data,
+        "todays_delivery_order":today_order_serializer.data,
+        "tomorrow_delivery_order":tomorrow_order_serializer.data,
+        "After3days_delivery_order":after_three_days_order_serializer.data
+    }
+    
+    return Response(data)

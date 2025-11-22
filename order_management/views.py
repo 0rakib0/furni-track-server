@@ -92,15 +92,6 @@ def ChartData(request):
             .annotate(count=Count('id'))
             .order_by('date')
         )
-        
-        # ontime_delivery_data = (
-        #     OrderModel.objects
-        #     .filter(order_status=True, delivery_date=F('delivery_date'))
-        #     .annotate(date=TruncDate("delivery_date"))
-        #     .values("date")
-        #     .annotate(count=Count("id"))
-        #     .order_by("date")
-        # )
         return Response({'order_data':order_data}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response ({"error":str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
