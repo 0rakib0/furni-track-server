@@ -84,7 +84,12 @@ def dashbord(request):
     today = timezone.localdate() 
     tomorrow = today + timezone.timedelta(days=1)
     three_days = today + timezone.timedelta(days=3)
-    orders = OrderModel.objects.all()
+    # orders = OrderModel.objects.all()
+    orders = OrderModel.objects.select_related(
+        "customar",
+        "dealer",
+        "employee"
+    )
     
     todays_delivery_order = orders.filter(delivery_date=today)
     today_order_serializer = OrderSerializer(todays_delivery_order, many=True)
