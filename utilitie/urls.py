@@ -16,6 +16,7 @@ urlpatterns = [
     path('customar-complain/', views.CustomarComplainView.as_view()),
     path('customar-complain/<int:id>/', views.CustomarComplainView.as_view()),
     path('home-dashbord-data/', views.dashbord, name='dashbord_data'),
+    path('test-task/', views.test_celery, name='test_celery'),
     path('', include(router.urls)),
 ]
 

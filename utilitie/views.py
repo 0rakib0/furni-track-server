@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view
 from django.utils import timezone
 from order_management.serializers import OrderSerializer
 from django.db.models import Q, F
+from .task import test_celery_func
 
 
 # Create your views here.
@@ -117,3 +118,11 @@ def dashbord(request):
     }
     
     return Response(data)
+
+
+
+@api_view(['GET'])
+def test_celery(request):
+    result = test_celery_func.delay()
+    print(result)
+    return Response({"Message":"task test rout successfully work!"})
