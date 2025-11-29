@@ -139,10 +139,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-]
+] 
 
 
 # CELERY COMFIGARATION
+
+
+CELERY_BEAT_SCHEDULE = {
+    'every-10-second':{
+        'task':'utilitie.task.celery_beat_test',
+        'schedule':10,
+    }
+}
+
+
 
 CELERY_BROKER_URL = 'redis://127.0.0.1:4000'
 # CELERY_RESULT_BACKEND = 'django-db'
