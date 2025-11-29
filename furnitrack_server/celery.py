@@ -1,6 +1,6 @@
 import os
-
 from celery import Celery
+from celery.schedules import crontab
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'furnitrack_server.settings')
@@ -17,6 +17,9 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 
-# @app.task(bind=True, ignore_result=True)
-# def debug_task(self):
-#     print(f'Request: {self.request!r}')
+app.conf.beat_schedule = {
+    'todays_delivery_orders':{
+        'task':'utilitie.tasks.TodaysOrderTask',
+        'schedule':crontab(hour=0, minute=50),
+    }
+}
