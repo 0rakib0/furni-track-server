@@ -1,6 +1,7 @@
 from celery import shared_task
 from django.utils import timezone
 from order_management.models import OrderModel
+from .models import CustomarComplain
 import json
 from django.utils.timezone import timedelta
 from django.utils import timezone
@@ -37,7 +38,6 @@ def DeliveryOrderReminder():
         "dealer",
         "employee"
     )
-    
     todays_delivery_order = orders.filter(delivery_date=today)
     delivery_reminder = orders.filter(Q(delivery_date__range=(tomorrow, three_days)) & Q(order_status=False))
     
@@ -63,12 +63,17 @@ def DuePaymentReminder():
         "dealer",
         "employee"
     )
-    todays_due_payment_client = orders.filter(next_advance_payment_date=today)
+    todays_due_payment_client = orders.filter(Q(next_advance_payment_date=today) & Q(order_status=False))
     print('all due payment customer reminder here--------')
     return "Task Complated"
 
 
 @shared_task
 def ServiceDateReminder():
+    complains = CustomarComplain.objects.filter(status=False)
+    
+    todays_service = complains.filter(service_date=today)
+    service_reminder = complains.filter(service_date__range=(tomorrow, three_days))
+    
     print("This all customar service list data here")
     return "Task Complated"
