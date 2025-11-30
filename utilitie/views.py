@@ -117,5 +117,3 @@ def dashbord(request):
     }
     
     return Response(data)
-
-
