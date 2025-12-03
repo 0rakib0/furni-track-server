@@ -71,7 +71,7 @@ def FrameShowDateReminder():
     todays_frameshow_order = orders.filter(delivery_date=today)
     frameshow_reminder = orders.filter(Q(frame_show_date__range=(tomorrow, three_days)) & Q(order_status=False))
     if not todays_frameshow_order or not frameshow_reminder:
-        return "No Order delivery for next 3 days"
+        return "No frame date for next 3 days"
     
     html_content = render_to_string(
         'emails_template/frameshowreminder.html',
@@ -117,5 +117,17 @@ def ServiceDateReminder():
     todays_service = complains.filter(service_date=today)
     service_reminder = complains.filter(service_date__range=(tomorrow, three_days))
     
-    print("This all customar service list data here")
+    if not todays_service or not service_reminder:
+        return "No service available today"
+    
+    html_content = render_to_string(
+        'emails_template/duepaymendreminder.html.html',
+        {
+        "todays_service" : todays_service,
+        "service_reminder":service_reminder
+        }
+    )
+    
+    subject = "Today's service date reminder"
+    SendMail(subject, html_content)
     return "Task Complated"
