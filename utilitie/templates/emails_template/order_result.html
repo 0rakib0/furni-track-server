@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+        }
+        th {
+            background-color: #57c7d4;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Today's Delivery Report</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Memo</th>
+                <th>Customer Name</th>
+                <th>Delivery Date</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in todays_delivery_order %}
+            <tr>
+                <td>{{ order.memo_number }}</td>
+                <td>{{ order.customar.name }}</td>
+                <td>{{ order.delivery_date }}</td>
+                <td>{{ order.customar.phone }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

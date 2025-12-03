@@ -28,8 +28,10 @@ class OrderModel(models.Model):
     initial_dalivery_date = models.DateField()
     next_advance_payment_date = models.DateField(null=True, blank=True)
     frame_show_date = models.DateField()
+    
     dealer = models.ForeignKey(DealerModel ,on_delete=models.DO_NOTHING)
     employee = models.ForeignKey(EmployeeModel ,on_delete=models.DO_NOTHING)
+    
     order_status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

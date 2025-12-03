@@ -84,7 +84,9 @@ def dashbord(request):
     today = timezone.localdate() 
     tomorrow = today + timezone.timedelta(days=1)
     three_days = today + timezone.timedelta(days=3)
+    
     # orders = OrderModel.objects.all()
+    
     orders = OrderModel.objects.select_related(
         "customar",
         "dealer",
