@@ -67,14 +67,23 @@ def FrameShowDateReminder():
         "dealer",
         "employee"
     )
+    
     todays_frameshow_order = orders.filter(delivery_date=today)
     frameshow_reminder = orders.filter(Q(frame_show_date__range=(tomorrow, three_days)) & Q(order_status=False))
+    if not todays_frameshow_order or not frameshow_reminder:
+        return "No Order delivery for next 3 days"
+    
     html_content = render_to_string(
-        'emails_template/order_result.html',
+        'emails_template/frameshowreminder.html',
         {
-        "todays_frameshow_order" : todays_frameshow_order
+        "todays_frameshow_order" : todays_frameshow_order,
+        'frameshow_reminder':frameshow_reminder
         }
     )
+    
+    subject = "Daily Frame show Report"
+    SendMail(subject, html_content)
+    
     return "Task Complated"
 
 @shared_task
@@ -85,7 +94,19 @@ def DuePaymentReminder():
         "employee"
     )
     todays_due_payment_client = orders.filter(Q(next_advance_payment_date=today) & Q(order_status=False))
-    print('all due payment customer reminder here--------')
+    
+    if not todays_due_payment_client:
+        return "No due payment date for any client today"
+    
+    html_content = render_to_string(
+        'emails_template/duepaymendreminder.html.html',
+        {
+        "todays_due_payment_client" : todays_due_payment_client
+        }
+    )
+    
+    subject = "Due payment date reminder"
+    SendMail(subject, html_content)
     return "Task Complated"
 
 

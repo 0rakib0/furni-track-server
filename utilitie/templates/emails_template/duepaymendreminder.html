@@ -23,44 +23,26 @@
     </style>
 </head>
 <body>
-    <h2>Today's Frame Show Order</h2>
+    <h2>Today's Due Payment Date: </h2>
     <table>
         <thead>
             <tr>
                 <th>Memo</th>
                 <th>Customer Name</th>
-                <th>Frame Show Date</th>
+                <th>Total Price</th>
+                <th>Advance Payment</th>
+                <th>Delivery Date</th>
                 <th>Phone Number</th>
             </tr>
         </thead>
         <tbody>
-            {% for order in todays_frameshow_order %}
+            {% for order in todays_due_payment_client %}
             <tr>
                 <td>{{ order.memo_number }}</td>
                 <td>{{ order.customar.name }}</td>
-                <td>{{ order.frame_show_date }}</td>
-                <td>{{ order.customar.phone }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h2 style="margin-top: 2rem;">Recent Frame Show Date Order's</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Memo</th>
-                <th>Customer Name</th>
-                <th>Frame Show Date</th>
-                <th>Phone Number</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in frameshow_reminder %}
-            <tr>
-                <td>{{ order.memo_number }}</td>
-                <td>{{ order.customar.name }}</td>
-                <td>{{ order.frame_show_date }}</td>
+                <td>{{ order.total_price }}</td>
+                <td>{{ order.advance_payment }}</td>
+                <td>{{ order.delivery_date }}</td>
                 <td>{{ order.customar.phone }}</td>
             </tr>
             {% endfor %}
