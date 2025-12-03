@@ -24,6 +24,7 @@
 </head>
 <body>
     <h2>Today's Delivery Report</h2>
+
     <table>
         <thead>
             <tr>
@@ -35,28 +36,6 @@
         </thead>
         <tbody>
             {% for order in todays_delivery_order %}
-            <tr>
-                <td>{{ order.memo_number }}</td>
-                <td>{{ order.customar.name }}</td>
-                <td>{{ order.delivery_date }}</td>
-                <td>{{ order.customar.phone }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h2 style="margin-top: 2rem;">After 2 and 3 days Delivery Report</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Memo</th>
-                <th>Customer Name</th>
-                <th>Delivery Date</th>
-                <th>Phone Number</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in delivery_reminder %}
             <tr>
                 <td>{{ order.memo_number }}</td>
                 <td>{{ order.customar.name }}</td>

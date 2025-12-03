@@ -46,13 +46,14 @@ def DeliveryOrderReminder():
         Q(order_status=False)
     )
     
-    if not todays_delivery_order or delivery_reminder:
+    if not todays_delivery_order or not delivery_reminder:
         return "No Order delivery for next 3 days"
     
     html_content = render_to_string(
         'emails_template/order_result.html',
         {
-        "todays_delivery_order" : todays_delivery_order
+        "todays_delivery_order" : todays_delivery_order,
+        'delivery_reminder':delivery_reminder
         }
     )
     subject = "Daily Delivery Report"
@@ -68,6 +69,12 @@ def FrameShowDateReminder():
     )
     todays_frameshow_order = orders.filter(delivery_date=today)
     frameshow_reminder = orders.filter(Q(frame_show_date__range=(tomorrow, three_days)) & Q(order_status=False))
+    html_content = render_to_string(
+        'emails_template/order_result.html',
+        {
+        "todays_frameshow_order" : todays_frameshow_order
+        }
+    )
     return "Task Complated"
 
 @shared_task
