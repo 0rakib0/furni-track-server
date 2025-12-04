@@ -26,6 +26,7 @@
             padding: 10px;
             border-bottom: 1px solid #ddd;
             font-size: 14px;
+            vertical-align: top;
         }
         .status {
             font-weight: bold;
@@ -36,17 +37,23 @@
         .completed {
             color: green;
         }
-        .img-box img {
-            width: 100px;
-            height: auto;
+        .details-box {
+            background: #f9f9f9;
+            padding: 10px;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid #eee;
+            margin-top: 10px;
+        }
+        .details-title {
+            font-weight: bold;
+            color: #57c7d4;
         }
     </style>
 </head>
 <body>
 
-    <h2>Today's Customer Service Complaint Report</h2>
+    <h2>Todays Customer Service Complaint Report</h2>
+
     <table>
         <thead>
             <tr>
@@ -56,13 +63,11 @@
                 <th>Address</th>
                 <th>Service Date</th>
                 <th>Problem Title</th>
-                <th>Problem Details</th>
                 <th>Status</th>
-                <th>Problem Picture</th>
             </tr>
         </thead>
-        <tbody>
 
+        <tbody>
         {% for service in todays_service %}
             <tr>
                 <td>{{ service.customar_name }}</td>
@@ -71,7 +76,6 @@
                 <td>{{ service.address }}</td>
                 <td>{{ service.service_date }}</td>
                 <td>{{ service.title }}</td>
-                <td>{{ service.problem_details }}</td>
 
                 <td class="status">
                     {% if service.status %}
@@ -80,21 +84,23 @@
                         <span class="pending">Pending</span>
                     {% endif %}
                 </td>
+            </tr>
 
-                <td class="img-box">
-                    {% if service.problem_pic %}
-                        <img src="{{ service.problem_pic.url }}" alt="Problem Image">
-                    {% else %}
-                        No Image
-                    {% endif %}
+            <!-- Full Problem Details Section -->
+            <tr>
+                <td colspan="7">
+                    <div class="details-box">
+                        <div class="details-title">Problem Details:</div>
+                        {{ service.problem_details }}
+                    </div>
                 </td>
             </tr>
         {% endfor %}
-
         </tbody>
     </table>
 
-    <h2 style="margin-top: 4rem;">Customer Service Complaint Reminder</h2>
+    <h2>Recent Customer Service Complaint Report</h2>
+
     <table>
         <thead>
             <tr>
@@ -104,13 +110,11 @@
                 <th>Address</th>
                 <th>Service Date</th>
                 <th>Problem Title</th>
-                <th>Problem Details</th>
                 <th>Status</th>
-                <th>Problem Picture</th>
             </tr>
         </thead>
-        <tbody>
 
+        <tbody>
         {% for service in service_reminder %}
             <tr>
                 <td>{{ service.customar_name }}</td>
@@ -119,7 +123,6 @@
                 <td>{{ service.address }}</td>
                 <td>{{ service.service_date }}</td>
                 <td>{{ service.title }}</td>
-                <td>{{ service.problem_details }}</td>
 
                 <td class="status">
                     {% if service.status %}
@@ -128,17 +131,18 @@
                         <span class="pending">Pending</span>
                     {% endif %}
                 </td>
+            </tr>
 
-                <td class="img-box">
-                    {% if service.problem_pic %}
-                        <img src="{{ service.problem_pic.url }}" alt="Problem Image">
-                    {% else %}
-                        No Image
-                    {% endif %}
+            <!-- Full Problem Details Section -->
+            <tr>
+                <td colspan="7">
+                    <div class="details-box">
+                        <div class="details-title">Problem Details:</div>
+                        {{ service.problem_details }}
+                    </div>
                 </td>
             </tr>
         {% endfor %}
-
         </tbody>
     </table>
 

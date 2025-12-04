@@ -121,7 +121,7 @@ def ServiceDateReminder():
         return "No service available today"
     
     html_content = render_to_string(
-        'emails_template/duepaymendreminder.html.html',
+        'emails_template/service.html',
         {
         "todays_service" : todays_service,
         "service_reminder":service_reminder

@@ -18,8 +18,12 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
-    'todays_delivery_orders':{
-        'task':'utilitie.tasks.DeliveryOrderReminder',
-        'schedule':crontab(hour=0, minute=15),
+    # 'todays_delivery_orders':{
+    #     'task':'utilitie.tasks.DeliveryOrderReminder',
+    #     'schedule':crontab(hour=0, minute=15),
+    # },
+    'service_date_reminder':{
+        'task':'utilitie.tasks.ServiceDateReminder',
+        'schedule':crontab(hour=0, minute=49),
     }
 }
