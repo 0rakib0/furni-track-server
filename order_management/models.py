@@ -16,7 +16,7 @@ class CustomerModel(models.Model):
 
 
 class OrderModel(models.Model):
-    customar = models.ForeignKey(CustomerModel ,on_delete=models.DO_NOTHING)
+    customar = models.ForeignKey(CustomerModel ,on_delete=models.SET_NULL, null=True, blank=True)
     memo_number = models.CharField(max_length=20)
     product_name = models.CharField(max_length=266)
     details = models.TextField()
@@ -29,8 +29,8 @@ class OrderModel(models.Model):
     next_advance_payment_date = models.DateField(null=True, blank=True)
     frame_show_date = models.DateField()
     
-    dealer = models.ForeignKey(DealerModel ,on_delete=models.DO_NOTHING)
-    employee = models.ForeignKey(EmployeeModel ,on_delete=models.DO_NOTHING)
+    dealer = models.ForeignKey(DealerModel ,on_delete=models.SET_NULL, null=True, blank=True)
+    employee = models.ForeignKey(EmployeeModel ,on_delete=models.SET_NULL, null=True, blank=True)
     
     order_status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

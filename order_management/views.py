@@ -6,11 +6,13 @@ from .serializers import OrderSerializer, CustomarSerializer
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django.utils.timezone import timedelta
+from datetime import datetime, time
 from django.utils import timezone
 from rest_framework import status
 from django.db.models import Q, F
 from django.db.models.functions import TruncDate
 from django.db.models import Count
+from django.utils.dateparse import parse_date
 # Create your views here.
 
 
@@ -26,7 +28,10 @@ class CustomarViewSet(viewsets.ModelViewSet):
 class OrderManagementDashbord(APIView):
     def get(self, request):
         # get latest 10 data
-        recent_order = OrderModel.objects.all().order_by('-id')[:10]
+        recent_order = (
+            OrderModel.objects
+            .order_by('-created_at')[:10]
+        )
         recent_serializer = OrderSerializer(recent_order, many=True)
         
         # get only pending order data
@@ -40,7 +45,11 @@ class OrderManagementDashbord(APIView):
 
 class DeliveredOrder(APIView):
     def get(self, request):
-        orders = OrderModel.objects.filter(Q( order_status = True))
+        orders = (
+            OrderModel.objects
+            .filter(order_status = True)
+            .order_by('-delivery_date')
+        )
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
@@ -48,9 +57,12 @@ class OrderSearch(APIView):
     def get(self, request):
         query = request.GET.get('order-search', '')
         if query:
-            orders = OrderModel.objects.filter(Q( memo_number = query) | Q(customar__phone = query))
+            orders = OrderModel.objects.filter(
+                Q( memo_number__icontains = query) | 
+                Q(customar__phone__icontains = query)
+            ).order_by('-id')
         else:
-            orders = OrderModel.objects.all()
+            orders = OrderModel.objects.all().order_by('-id')
 
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
@@ -62,13 +74,15 @@ def RecentDeliveryData(request):
         tomorrow = today + timedelta(days=1)
         three_days = today + timedelta(days=3)
         
-        todays_delivery_order = OrderModel.objects.filter(Q(delivery_date=today))
+        todays_delivery_order = OrderModel.objects.filter(delivery_date=today)
         today_order_serializer = OrderSerializer(todays_delivery_order, many=True)
         
-        tomorrow_delivery_order = OrderModel.objects.filter(Q(delivery_date=tomorrow))
+        tomorrow_delivery_order = OrderModel.objects.filter(delivery_date=tomorrow)
         tommorow_order_serializer = OrderSerializer(tomorrow_delivery_order, many=True)
         
-        after_three_days_delivery_order = OrderModel.objects.filter(delivery_date__range=(today,three_days))
+        after_three_days_delivery_order = OrderModel.objects.filter(
+            delivery_date__range=(today + timedelta(days=2), three_days)
+        )
         after_three_days_order_serializer = OrderSerializer(after_three_days_delivery_order, many=True)
         return Response({
             'todays_delivery':today_order_serializer.data,
@@ -112,9 +126,25 @@ class DeliveryDates(APIView):
 class FilterOrdersData(APIView):
     def get(self, request):
         start_date = request.query_params.get('start_date')
-        end_date = request.query_params.get('end_date')        
+        end_date = request.query_params.get('end_date')
+        
+        start = parse_date(start_date) if start_date else None
+        end = parse_date(end_date) if end_date else None
+        
+        if not start or not end:
+            return Response(
+                {'error': 'start_date and end_date are required in YYYY-MM-DD format'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        start_datetime = datetime.combine(start, time.min)
+        end_datetime = datetime.combine(end, time.max)
+               
         try:
-            filter_order = OrderModel.objects.filter(created_at__range=[start_date, end_date])
+            filter_order = OrderModel.objects.filter(
+                created_at__range=[start_datetime, end_datetime]
+            ).order_by('-created_at')
+            
             order_serializer = OrderSerializer(filter_order, many=True)
             return Response(order_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:

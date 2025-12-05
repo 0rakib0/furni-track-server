@@ -36,7 +36,8 @@ class EmployeeExpenseViewSet(viewsets.ModelViewSet):
 
 
 class CustomarComplainView(APIView):
-    def post(self, request, format=None):
+    
+    def post(self, request):
         complain_data = ComplainSerializer(data=request.data)
         if complain_data.is_valid():
             complain_data.save()
@@ -45,6 +46,7 @@ class CustomarComplainView(APIView):
             complain_data.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+        
     def get(self, request):
         query_data = request.query_params.get('filter')
 
@@ -69,7 +71,6 @@ class CustomarComplainView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     def patch (self, request, id):
-        print("--------Hello from Patch-------")
         try:
             complain = CustomarComplain.objects.get(id=id)
         except CustomarComplain.DoesNotExist:

@@ -8,8 +8,6 @@ class DealerModel(models.Model):
     phone = models.CharField(max_length=20)
     address = models.TextField()
     dealer_image = models.ImageField(upload_to='dealer_image')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     email = models.EmailField(unique=True, null=True, blank=True)
     company_name = models.CharField(max_length=255, null=True, blank=True)
     nid_number = models.CharField(max_length=30, null=True, blank=True) 
@@ -55,7 +53,7 @@ class EmployeeModel(models.Model):
     leave_days = models.PositiveIntegerField(default=0)  # মোট ছুটির সংখ্যা
     notes = models.TextField(null=True, blank=True)  # Extra remark/performance notes
     address = models.TextField()
-    employee_image = models.ImageField(upload_to='dealer_image')
+    employee_image = models.ImageField(upload_to='employee_image')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

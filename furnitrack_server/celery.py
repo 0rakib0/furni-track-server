@@ -22,8 +22,12 @@ app.conf.beat_schedule = {
     #     'task':'utilitie.tasks.DeliveryOrderReminder',
     #     'schedule':crontab(hour=0, minute=15),
     # },
-    'service_date_reminder':{
-        'task':'utilitie.tasks.ServiceDateReminder',
-        'schedule':crontab(hour=0, minute=49),
+    # 'service_date_reminder':{
+    #     'task':'utilitie.tasks.ServiceDateReminder',
+    #     'schedule':crontab(hour=0, minute=49),
+    # }, 
+    'frame_show_date_reminder':{
+        'task':'utilitie.tasks.FrameShowDateReminder',
+        'schedule':crontab(hour=1, minute=2),
     }
 }

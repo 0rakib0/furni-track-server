@@ -68,7 +68,7 @@ def FrameShowDateReminder():
         "employee"
     )
     
-    todays_frameshow_order = orders.filter(delivery_date=today)
+    todays_frameshow_order = orders.filter(frame_show_date=today)
     frameshow_reminder = orders.filter(Q(frame_show_date__range=(tomorrow, three_days)) & Q(order_status=False))
     if not todays_frameshow_order or not frameshow_reminder:
         return "No frame date for next 3 days"
