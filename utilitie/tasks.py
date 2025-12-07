@@ -1,19 +1,16 @@
 from celery import shared_task
 from django.template.loader import render_to_string
-from django.utils import timezone
 from order_management.models import OrderModel
 from .models import CustomarComplain
 import json
-from django.utils.timezone import timedelta
+from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Q
 from .sendmail import SendMail
 # celery worker task list here.........
 
 
-today = timezone.localdate() 
-tomorrow = today + timedelta(days=1)
-three_days = today + timedelta(days=3)
+
 
 
 @shared_task
@@ -34,7 +31,12 @@ def GetFilterData(self, date):
 
 # all periodic task list here...........
 @shared_task
-def DeliveryOrderReminder():    
+def DeliveryOrderReminder():
+    
+    today = timezone.localdate() 
+    tomorrow = today + timedelta(days=1)
+    three_days = today + timedelta(days=3)
+        
     orders = OrderModel.objects.select_related(
         "customar",
         "dealer",
@@ -46,7 +48,7 @@ def DeliveryOrderReminder():
         Q(order_status=False)
     )
     
-    if not todays_delivery_order or not delivery_reminder:
+    if todays_delivery_order.count() == 0 and delivery_reminder.count() == 0:
         return "No Order delivery for next 3 days"
     
     html_content = render_to_string(
@@ -62,6 +64,11 @@ def DeliveryOrderReminder():
 
 @shared_task
 def FrameShowDateReminder():
+    
+    today = timezone.localdate() 
+    tomorrow = today + timedelta(days=1)
+    three_days = today + timedelta(days=3)
+    
     orders = OrderModel.objects.select_related(
         "customar",
         "dealer",
@@ -70,7 +77,7 @@ def FrameShowDateReminder():
     
     todays_frameshow_order = orders.filter(frame_show_date=today)
     frameshow_reminder = orders.filter(Q(frame_show_date__range=(tomorrow, three_days)) & Q(order_status=False))
-    if not todays_frameshow_order or not frameshow_reminder:
+    if todays_frameshow_order.count() == 0 and frameshow_reminder.count() == 0:
         return "No frame date for next 3 days"
     
     html_content = render_to_string(
@@ -88,6 +95,7 @@ def FrameShowDateReminder():
 
 @shared_task
 def DuePaymentReminder():
+    today = timezone.localdate()
     orders = OrderModel.objects.select_related(
         "customar",
         "dealer",
@@ -95,11 +103,11 @@ def DuePaymentReminder():
     )
     todays_due_payment_client = orders.filter(Q(next_advance_payment_date=today) & Q(order_status=False))
     
-    if not todays_due_payment_client:
+    if todays_due_payment_client.count() == 0:
         return "No due payment date for any client today"
     
     html_content = render_to_string(
-        'emails_template/duepaymendreminder.html.html',
+        'emails_template/duepaymendreminder.html',
         {
         "todays_due_payment_client" : todays_due_payment_client
         }
@@ -112,12 +120,16 @@ def DuePaymentReminder():
 
 @shared_task
 def ServiceDateReminder():
-    complains = CustomarComplain.objects.filter(status=False)
     
+    today = timezone.localdate() 
+    tomorrow = today + timedelta(days=1)
+    three_days = today + timedelta(days=3)
+    
+    complains = CustomarComplain.objects.filter(status=False)
     todays_service = complains.filter(service_date=today)
     service_reminder = complains.filter(service_date__range=(tomorrow, three_days))
     
-    if not todays_service or not service_reminder:
+    if todays_service.count() == 0 and service_reminder.count() == 0:
         return "No service available today"
     
     html_content = render_to_string(
