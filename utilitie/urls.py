@@ -16,6 +16,7 @@ urlpatterns = [
     path('customar-complain/', views.CustomarComplainView.as_view()),
     path('customar-complain/<int:id>/', views.CustomarComplainView.as_view()),
     path('home-dashbord-data/', views.dashbord, name='dashbord_data'),
+    path("create-order-sheet/", views.CreateOrderSheet, name='create_order_sheet'),
     path('', include(router.urls)),
 ]
 

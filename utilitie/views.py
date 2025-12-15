@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view
 from django.utils import timezone
 from order_management.serializers import OrderSerializer
 from django.db.models import Q, F
+from .tasks import CreateOrderSheet, GetFilterData
 
 
 # Create your views here.
@@ -120,3 +121,9 @@ def dashbord(request):
     }
     
     return Response(data)
+
+@api_view(['GET'])
+def CreateOrderSheet(request):
+    task_result = CreateOrderSheet.delay()
+    print(task_result)
+    return Response({"message":"Task Succesfully get please give me fiew minits for porsses"})

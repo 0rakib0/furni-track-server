@@ -7,17 +7,8 @@ from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Q
 from .sendmail import SendMail
+
 # celery worker task list here.........
-
-
-
-
-
-@shared_task
-def celery_beat_test():
-    print('Celery Beat Task executed!---1')
-    return "Done"
-
 @shared_task
 def CreateOrderSheet():
     print('Celery Beat Task executed!---1')
@@ -32,7 +23,6 @@ def GetFilterData(self, date):
 # all periodic task list here...........
 @shared_task
 def DeliveryOrderReminder():
-    
     today = timezone.localdate() 
     tomorrow = today + timedelta(days=1)
     three_days = today + timedelta(days=3)
